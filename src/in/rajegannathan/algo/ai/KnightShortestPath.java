@@ -105,13 +105,13 @@ public class KnightShortestPath {
 		this.populateDistanceMatrix();
 
 		Coordinate tmpSource = source;
-		
+
 		while (!tmpSource.equals(target)) {
 			TreeMap<Integer, Coordinate> tmpCoordinates = new TreeMap<Integer, Coordinate>();
-			for(Coordinate pos : getAllKnightMoves(tmpSource)){
+			for (Coordinate pos : getAllKnightMoves(tmpSource)) {
 				tmpCoordinates.put(getKnightDistanceFromTarget(pos), pos);
 			}
-			
+
 			Coordinate value = tmpCoordinates.firstEntry().getValue();
 			shortestPath.add(value);
 			tmpSource = value;
@@ -124,14 +124,14 @@ public class KnightShortestPath {
 		List<Coordinate> possibleMoves = new ArrayList<Coordinate>();
 		int xPos = tmpSource.getxPos();
 		int yPos = tmpSource.getyPos();
-		possibleMoves.add(new Coordinate(xPos+2, yPos+1));
-		possibleMoves.add(new Coordinate(xPos+2, yPos-1));
-		possibleMoves.add(new Coordinate(xPos-2, yPos+1));
-		possibleMoves.add(new Coordinate(xPos-2, yPos-1));
-		possibleMoves.add(new Coordinate(xPos+1, yPos+2));
-		possibleMoves.add(new Coordinate(xPos+1, yPos-2));
-		possibleMoves.add(new Coordinate(xPos-1, yPos+2));
-		possibleMoves.add(new Coordinate(xPos-1, yPos-2));
+		possibleMoves.add(new Coordinate(xPos + 2, yPos + 1));
+		possibleMoves.add(new Coordinate(xPos + 2, yPos - 1));
+		possibleMoves.add(new Coordinate(xPos - 2, yPos + 1));
+		possibleMoves.add(new Coordinate(xPos - 2, yPos - 1));
+		possibleMoves.add(new Coordinate(xPos + 1, yPos + 2));
+		possibleMoves.add(new Coordinate(xPos + 1, yPos - 2));
+		possibleMoves.add(new Coordinate(xPos - 1, yPos + 2));
+		possibleMoves.add(new Coordinate(xPos - 1, yPos - 2));
 		return possibleMoves;
 	}
 
@@ -142,12 +142,17 @@ public class KnightShortestPath {
 
 		int absXDistance = Math.abs(tmpSource.getxPos() - target.getxPos());
 		int absYDistance = Math.abs(tmpSource.getyPos() - target.getyPos());
+
+		absXDistance = absXDistance == 0 ? 1 : absXDistance;
+		absYDistance = absYDistance == 0 ? 1 : absYDistance;
+
 		if (absXDistance >= 3 || absYDistance >= 3) {
 			return (absXDistance * absYDistance) + 2;
 		}
 
 		if (distanceMatrix.get(tmpSource.getxPos()).get(tmpSource.getyPos()) == 4) {
-			return 5;
+			// some high number. never get into this cell
+			return 25;
 		}
 
 		return distanceMatrix.get(tmpSource.getxPos()).get(tmpSource.getyPos());
